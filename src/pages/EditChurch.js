@@ -1,8 +1,8 @@
 import { useContext, useEffect, useState } from "react";
 import NavigationBar from "../components/Navbar";
 import { ChurchContext } from "../contexts/churchContext";
-import { useParams } from "react-router-dom";
-import { Container, Form, Row } from "react-bootstrap";
+import { useNavigate, useParams } from "react-router-dom";
+import { Button, Container, Form, Row } from "react-bootstrap";
 
 function EditChurch() {
     const [church, setChurch] = useState({
@@ -25,8 +25,9 @@ function EditChurch() {
 
     const params = useParams()
     let id = params.id
+    const navigate = useNavigate()
 
-    const { getChurch } = useContext(ChurchContext)
+    const { getChurch, updateChurch } = useContext(ChurchContext)
 
     useEffect(() => {
         async function gettingChurch() {
@@ -61,7 +62,11 @@ function EditChurch() {
         }
     };
 
-
+    async function handleSubmit() {
+        await updateChurch(church).then(
+            navigate('/churches')
+        )
+    }
 
 
     return (
@@ -71,7 +76,7 @@ function EditChurch() {
                 <>
                     <Container>
                         <Row>
-                            <Form>
+                            <Form onSubmit={handleSubmit}>
                                 <Row>
                                     <img className="col-12 col-sm-3" src={church.imageUrl} />
                                     <Form.Group className="col-12 col-sm-9">
@@ -187,6 +192,11 @@ function EditChurch() {
                                         </Row>
                                     </Form.Group>
                                 </Row>
+                                <center>
+                                    <Button
+                                    onClick={handleSubmit}
+                                    >Submit</Button>
+                                </center>
                             </Form>
                         </Row>
                     </Container>
