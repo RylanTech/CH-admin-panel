@@ -5,3 +5,15 @@
   padding: 15px;
   margin-top: 15px;
 }
+
+.denom {
+  color: gray;
+}
+
+.churchName {
+  margin-top: 5px;
+}
+
+.churchLink {
+  text-decoration: none;
+}

@@ -27,6 +27,7 @@ function Homepage() {
 
     function deleteKey() {
         localStorage.removeItem("myChurchUserToken");
+        setKeyInfo({key: ""})
     }
 
     function SetKeyInLocal() {
