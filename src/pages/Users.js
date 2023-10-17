@@ -1,8 +1,8 @@
-import { Button, Container, Dropdown, Form, Row } from "react-bootstrap";
+import { Button, Card, Container, Dropdown, Form, Row } from "react-bootstrap";
 import NavigationBar from "../components/Navbar";
 import { useContext, useState } from "react";
 import { ChurchUserContext } from "../contexts/churchUserContext";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 function Userspage() {
     const [action, setAction] = useState("ASU");
@@ -12,9 +12,19 @@ function Userspage() {
         email: "",
         password: ""
     })
+    const [query, setQuery] = useState({
+        query: ""
+    })
+    const [users, setUsers] = useState()
 
-    const { createChurchUser } = useContext(ChurchUserContext)
+    const { createChurchUser, searchUsers } = useContext(ChurchUserContext)
     const navigate = useNavigate()
+
+    function handleQueryChange(event) {
+        setQuery((preValue) => {
+            return { ...preValue, [event.target.name]: event.target.value }
+        })
+    }
 
     function handleChange(event) {
         setAddStandardUser((preValue) => {
@@ -34,7 +44,7 @@ function Userspage() {
             navigate('/')
         )
     }
-    
+
     async function handleAAUSubmit() {
         let usr = {
             firstName: addStandardUser.firstName,
@@ -46,6 +56,42 @@ function Userspage() {
         await createChurchUser(usr).then(
             navigate('/')
         )
+    }
+
+    async function handleSubmit(event) {
+        event.preventDefault()
+        let arr = await searchUsers(query.query)
+        setUsers(arr)
+    }
+
+    function mapUsers() {
+        if (users) {
+            return users.map((user) => {
+                return (
+                    <div className="col-12 col-md-6">
+                        <Link
+                            to={`/user/${user.userId}`}
+                            className="churchLink"
+                        >
+                            <Card className="churchItem">
+                                <Card.Body>
+                                    <Row>
+                                        <div className="col-9">
+                                            {user.firstName} {user.lastName}
+                                            <br />
+                                            <div className="denom">
+                                                {user.email}
+                                                <br />
+                                            </div>
+                                        </div>
+                                    </Row>
+                                </Card.Body>
+                            </Card>
+                        </Link>
+                    </div>
+                )
+            })
+        }
     }
 
     function actionXml() {
@@ -94,7 +140,7 @@ function Userspage() {
                                 </Row>
                                 <center>
                                     <Button
-                                    onClick={handleASUSubmit}
+                                        onClick={handleASUSubmit}
                                     >
                                         Submit
                                     </Button>
@@ -149,7 +195,7 @@ function Userspage() {
                                 </Row>
                                 <center>
                                     <Button
-                                    onClick={handleAAUSubmit}
+                                        onClick={handleAAUSubmit}
                                     >
                                         Submit
                                     </Button>
@@ -160,7 +206,30 @@ function Userspage() {
                 </>
             )
         } else if (action === "EU") {
-
+            return (
+                <>
+                    <Container>
+                        <Row>
+                            <Form onSubmit={handleSubmit}>
+                                <Form.Group className="col-12">
+                                    <center>
+                                        <h1>Search Users</h1>
+                                    </center>
+                                    <br /><br />
+                                    <Form.Control
+                                        value={query.query}
+                                        name="query"
+                                        onChange={handleQueryChange}
+                                    />
+                                </Form.Group>
+                                <Row>
+                                    {mapUsers()}
+                                </Row>
+                            </Form>
+                        </Row>
+                    </Container>
+                </>
+            )
         }
     }
 

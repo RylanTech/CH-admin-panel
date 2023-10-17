@@ -17,3 +17,7 @@
 .churchLink {
   text-decoration: none;
 }
+
+.churchItem:hover {
+  background-color: #FEBB08;
+}

@@ -5,6 +5,7 @@ import Churchespage from "./pages/Churches";
 import EditChurch from "./pages/EditChurch";
 import Eventspage from "./pages/Events";
 import EditEvent from "./pages/EditEvent";
+import Userpage from "./pages/Userpage";
 
 function App() {
   return (
@@ -12,6 +13,8 @@ function App() {
       <Routes>
         <Route path='/' element={<Homepage/>}/>
         <Route path="/users" element={<Userspage/>}/>
+        <Route path="/user/:id" element={<Userpage/>}/>
+
         <Route path="/events" element={<Eventspage/>}/>
         <Route path="/event/:id" element={<EditEvent/>}/>
 

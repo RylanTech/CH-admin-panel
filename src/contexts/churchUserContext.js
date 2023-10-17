@@ -37,11 +37,63 @@ export const ChurchUserProvider = (props) => {
     }
   };
 
+  const searchUsers = async (query) => {
+    const queryUrl = `${BASE_URL}search/${query}`;
+    try {
+      const response = await axios.post(queryUrl, query, {
+        headers: authHeader(),
+      });
+      return response.data;
+    } catch (error) {
+      throw error;
+    }
+  };
+
+  const getUser = async (id) => {
+    const queryUrl = `${BASE_URL}${id}`;
+    try {
+      const response = await axios.get(queryUrl, {
+        headers: authHeader(),
+      });
+      return response.data;
+    } catch (error) {
+      throw error;
+    }
+  };
+  
+  const updateUser = async (user) => {
+    const url = `${BASE_URL}edit-account/${user.userId}`;
+    try {
+      const response = await axios.put(url, user, {
+        headers: authHeader(),
+      });
+      return response.data
+    } catch (error) {
+      throw error;
+    }
+  }
+  
+  const deleteUser = async (userId) => {
+    const url = `${BASE_URL}delete-account/${userId}`;
+    try {
+      const response = await axios.delete(url, {
+        headers: authHeader(),
+      });
+      return response.data
+    } catch (error) {
+      throw error;
+    }
+  }
+
   return (
     <ChurchUserContext.Provider
       value={{
         loginChurchUser,
-        createChurchUser
+        createChurchUser,
+        searchUsers,
+        getUser,
+        updateUser,
+        deleteUser
       }}
     >
       {props.children}
