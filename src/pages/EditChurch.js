@@ -1,8 +1,9 @@
 import { useContext, useEffect, useState } from "react";
 import NavigationBar from "../components/Navbar";
 import { ChurchContext } from "../contexts/churchContext";
-import { useNavigate, useParams } from "react-router-dom";
-import { Button, Container, Form, Row } from "react-bootstrap";
+import { Link, useNavigate, useParams } from "react-router-dom";
+import { Button, Card, Container, Form, Row } from "react-bootstrap";
+import { ChurchUserContext } from "../contexts/churchUserContext";
 
 function EditChurch() {
     const [church, setChurch] = useState({
@@ -22,17 +23,21 @@ function EditChurch() {
         imageUrl: "",
         website: "",
     });
+    const [searchUser, setSearchUser] = useState("")
+    const [churchIdPlaceholder, setChurchIdPlaceholder] = useState("")
+    const [users, setUsers] = useState()
 
     const params = useParams()
     let id = params.id
     const navigate = useNavigate()
 
     const { getChurch, updateChurch } = useContext(ChurchContext)
+    const { searchUsers } = useContext(ChurchUserContext)
 
     useEffect(() => {
         async function gettingChurch() {
-            let arr = await getChurch(id)
-            setChurch(arr)
+            let chr = await getChurch(id)
+            setChurch(chr)
         }
         gettingChurch()
     }, [])
@@ -62,10 +67,50 @@ function EditChurch() {
         }
     };
 
+    async function searchAUser(value) {
+        setSearchUser(value)
+        let users = await searchUsers(value)
+        setUsers(users)
+    }
+
     async function handleSubmit() {
         await updateChurch(church).then(
             navigate('/churches')
         )
+    }
+
+    function handleSetUsers(user) {
+        setChurch(prevChurch => ({
+            ...prevChurch,
+            userId: user.userId,
+        }));
+    }
+
+    function mapUsers() {
+        if (users) {
+            let userXml = []
+            users.map((user) => {
+                userXml.push(
+                    <div className="col-12" onClick={() => handleSetUsers(user)}>
+                        <Card className="churchItem">
+                            <Card.Body>
+                                <Row>
+                                    <div className="col-9">
+                                        {user.firstName} {user.lastName} - {user.userId}
+                                        <br />
+                                        <div className="denom">
+                                            {user.email}
+                                            <br />
+                                        </div>
+                                    </div>
+                                </Row>
+                            </Card.Body>
+                        </Card>
+                    </div>
+                )
+            })
+            return userXml
+        }
     }
 
 
@@ -155,11 +200,27 @@ function EditChurch() {
                                         <Form.Label>User Id</Form.Label>
                                         <Form.Control
                                             value={church.userId}
-                                            name="userId"
-                                            onChange={handleChange}
+                                            disabled
                                         />
                                     </Form.Group>
                                     <Form.Group className="col-12 col-sm-8">
+                                        <Form.Label>Select a Church</Form.Label>
+                                        <Form.Control
+                                            value={searchUser}
+                                            name="searchUser"
+                                            onChange={(e) => searchAUser(e.target.value)}
+                                        />
+                                        {users ? (
+                                            <>
+                                                {mapUsers()}
+                                            </>
+                                        ) : (
+                                            <>
+
+                                            </>
+                                        )}
+                                    </Form.Group>
+                                    <Form.Group className="col-12">
                                         <Form.Label>Website</Form.Label>
                                         <Form.Control
                                             value={church.website}
@@ -194,7 +255,7 @@ function EditChurch() {
                                 </Row>
                                 <center>
                                     <Button
-                                    onClick={handleSubmit}
+                                        onClick={handleSubmit}
                                     >Submit</Button>
                                 </center>
                             </Form>

@@ -42,7 +42,7 @@ function Userpage() {
         }
 
         gettingUser();
-    }, [id]);
+    }, [id, getUser]);
 
     function handleChange(event) {
         setUser((preValue) => {

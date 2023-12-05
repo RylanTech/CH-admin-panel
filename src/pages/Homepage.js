@@ -73,6 +73,7 @@ function Homepage() {
                                     <Form.Control
                                         value={password}
                                         name='password'
+                                        type='password'
                                         onChange={handleChange}
                                     />
                                 </Form.Group>

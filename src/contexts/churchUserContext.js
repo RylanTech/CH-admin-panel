@@ -38,6 +38,9 @@ export const ChurchUserProvider = (props) => {
   };
 
   const searchUsers = async (query) => {
+    if (!query) {
+      return
+    }
     const queryUrl = `${BASE_URL}search/${query}`;
     try {
       const response = await axios.post(queryUrl, query, {

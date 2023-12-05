@@ -16,9 +16,12 @@ export const ChurchProvider = (props) => {
     if (query === "") {
       return
     }
+
     const searchChurchUrl = `${BASE_URL}search/${query}`
     try {
-      const response = await axios.get(searchChurchUrl);
+      const response = await axios.get(searchChurchUrl, {
+        headers: authHeader(),
+      });
       return response.data
     } catch (error) {
       return false
