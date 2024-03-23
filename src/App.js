@@ -6,6 +6,9 @@ import EditChurch from "./pages/EditChurch";
 import Eventspage from "./pages/Events";
 import EditEvent from "./pages/EditEvent";
 import Userpage from "./pages/Userpage";
+import Articles from "./pages/Articles";
+import EditArticle from "./pages/EditArticle";
+import CreateArticle from "./pages/CreateArticle";
 
 function App() {
   return (
@@ -20,6 +23,10 @@ function App() {
 
         <Route path="/churches" element={<Churchespage/>}/>
         <Route path="/church/:id" element={<EditChurch/>}/>
+
+        <Route path="/articles" element={<Articles/>}/>
+        <Route path="/article/edit/:id" element={<EditArticle/>}/>
+        <Route path="/article/create" element={<CreateArticle/>}/>
       </Routes>
     </BrowserRouter>
   );

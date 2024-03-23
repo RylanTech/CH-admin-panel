@@ -18,6 +18,7 @@ function NavigationBar() {
                                 <Link className="nav-link" to="/churches">Churches</Link>
                                 <Link className="nav-link" to="/events">Events</Link>
                                 <Link className="nav-link" to="/users">Users</Link>
+                                <Link className='nav-link' to="/articles">Articles</Link>
                             </Nav>
                         </Navbar.Collapse>
                     </Container>

@@ -21,3 +21,11 @@
 .churchItem:hover {
   background-color: #FEBB08;
 }
+
+.articleTitle {
+  padding: 20px;
+}
+
+.articleItem {
+  text-decoration: none;
+}
