@@ -21,7 +21,7 @@ export const ArticleProvider = (props) => {
             });
             return response.data
         } catch (error) {
-            return false
+            throw error
         }
     };
 

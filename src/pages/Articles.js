@@ -6,15 +6,21 @@ import { Link } from "react-router-dom"
 
 function Articles() {
     const [articles, setArticles] = useState()
+    const [message, setMessage] = useState(false)
     const { getArticles } = useContext(ArticleContext)
 
     useEffect(() => {
         async function gettingArticles() {
             let res = await getArticles()
             setArticles(res)
+            if (res) {
+                setMessage(false)
+            } else {
+                setMessage(true)
+            }
         }
         gettingArticles()
-    }, [])
+    }, [getArticles])
 
     function getDateString(articleTime) {
         const isoDate = new Date(articleTime);
@@ -76,6 +82,17 @@ function Articles() {
                         <br />
                         {ifArticles()}
                     </div>
+                </Row>
+                <Row>
+                    {message ? (
+                        <>
+                        <div>
+                            Token Expired
+                        </div>
+                        </>
+                    ) : (
+                        <></>
+                    )}
                 </Row>
             </Container>
         </>
